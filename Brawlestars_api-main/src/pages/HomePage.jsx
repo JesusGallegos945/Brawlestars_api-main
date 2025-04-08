@@ -15,126 +15,116 @@ import {
 import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ContenidoBrawlers from "./ContenidoBrawlers";
+import ExerciseGrid from "./ContenidoBrawlers";
 
 export default function HomePage() {
-  const [textoBuscar, setTextoBuscar] = useState("");
-  const [filtroClass, setFiltroClass] = useState("");
-  const [filtroRarity, setFiltroRarity] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [targetFilter, setTargetFilter] = useState("");
+  const [equipmentFilter, setEquipmentFilter] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const API_KEY = "4ededf6e20msh42a206ad00ea931p1da74djsnafb999b34c28";
 
-  // API Key de API Ninjas (la que proporcionaste)
-  const API_KEY = "7b1cWt7xADAom+zxzdCWFQ==VmV1cVGVgAIU2kCA";
-
-  // Datos de ejercicios desde API Ninjas
-  const obtenerEjercicios = async () => {
+  const fetchExercises = async () => {
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch(
-        "https://api.api-ninjas.com/v1/exercises?muscle=biceps", // Ejemplo: filtrar por músculo
+        "https://exercisedb.p.rapidapi.com/exercises?limit=50",
         {
-          headers: { "X-Api-Key": API_KEY },
+          headers: {
+            "X-RapidAPI-Key": API_KEY,
+            "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+          },
         }
       );
-      if (!response.ok) {
-        throw new Error("Error al obtener los ejercicios");
-      }
-      const result = await response.json();
-      // Mapeamos los datos para adaptarlos a tu estructura (simulando brawlers)
-      const ejerciciosAdaptados = result.map((ejercicio, index) => ({
-        id: index,
-        name: ejercicio.name,
-        class: { name: ejercicio.type || "No especificado" }, // Tipo -> Clase
-        rarity: { name: ejercicio.difficulty || "No especificado" }, // Dificultad -> Rareza
-        imageUrl: `https://via.placeholder.com/200?text=${ejercicio.name}`, // Imagen placeholder (la API no incluye imágenes)
+      if (!response.ok) throw new Error("Error loading exercises");
+      const exercises = await response.json();
+      
+      const formattedExercises = exercises.map((exercise) => ({
+        id: exercise.id,
+        name: exercise.name,
+        class: { name: exercise.bodyPart },
+        rarity: { name: exercise.equipment || "bodyweight" },
+        imageUrl: exercise.gifUrl,
       }));
-      setData(ejerciciosAdaptados);
+      setData(formattedExercises);
     } catch (error) {
+      setError("Failed to load exercises. Please try again.");
       console.error("Error:", error);
-      setError("Error al cargar ejercicios. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Cargar datos al inicio
   useEffect(() => {
-    obtenerEjercicios();
+    fetchExercises();
   }, []);
 
-  // Filtrado (funcionalidad original)
-  const brawlersFiltrados = data.filter((brawler) => {
-    const coincideNombre = brawler.name.toLowerCase().includes(textoBuscar.toLowerCase());
-    const coincideClass = filtroClass ? brawler.class.name.toLowerCase() === filtroClass.toLowerCase() : true;
-    const coincideRarity = filtroRarity ? brawler.rarity.name.toLowerCase() === filtroRarity.toLowerCase() : true;
-    return coincideNombre && coincideClass && coincideRarity;
+  const filteredExercises = data.filter((exercise) => {
+    const matchesSearch = exercise.name.toLowerCase().includes(searchText.toLowerCase());
+    const matchesTarget = targetFilter ? exercise.class.name.toLowerCase() === targetFilter.toLowerCase() : true;
+    const matchesEquipment = equipmentFilter ? exercise.rarity.name.toLowerCase() === equipmentFilter.toLowerCase() : true;
+    return matchesSearch && matchesTarget && matchesEquipment;
   });
 
   return (
     <div>
-      <h1>Encuentra tu próximo ejercicio</h1> {/* Cambiado de "brawler" a "ejercicio" */}
+      <h1>Find Your Next Exercise</h1>
 
-      {/* Barra de búsqueda (igual) */}
-      <div style={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
-        <Paper component="form" sx={{ display: "flex", alignItems: "center", padding: "10px 20px", marginBottom: "20px", width: "800px" }}>
-          <InputBase
-            sx={{ ml: 2, flex: 1 }}
-            placeholder="Buscar ejercicio..."
-            value={textoBuscar}
-            onChange={(e) => setTextoBuscar(e.target.value)}
-          />
-          <IconButton type="button" sx={{ p: "10px" }}>
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-      </div>
+      <Paper component="form" sx={{ display: "flex", alignItems: "center", padding: "10px 20px", marginBottom: "20px", width: "800px" }}>
+        <InputBase
+          sx={{ ml: 2, flex: 1 }}
+          placeholder="Search exercises..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        <IconButton type="button" sx={{ p: "10px" }}>
+          <SearchIcon />
+        </IconButton>
+      </Paper>
 
-      {/* Filtros adaptados para ejercicios */}
       <div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
-        {/* Filtro de Tipo (antes Clase) */}
         <div style={{ width: "300px" }}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Tipo de ejercicio</Typography>
+              <Typography>Target Area</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <FormControl fullWidth>
                 <Select
-                  value={filtroClass}
-                  onChange={(e) => setFiltroClass(e.target.value)}
+                  value={targetFilter}
+                  onChange={(e) => setTargetFilter(e.target.value)}
                   displayEmpty
                 >
-                  <MenuItem value="">Todos</MenuItem>
-                  <MenuItem value="strength">Fuerza</MenuItem>
-                  <MenuItem value="cardio">Cardio</MenuItem>
-                  <MenuItem value="stretching">Estiramiento</MenuItem>
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="chest">Chest</MenuItem>
+                  <MenuItem value="back">Back</MenuItem>
+                  <MenuItem value="arms">Arms</MenuItem>
+                  <MenuItem value="legs">Legs</MenuItem>
                 </Select>
               </FormControl>
             </AccordionDetails>
           </Accordion>
         </div>
 
-        {/* Filtro de Dificultad (antes Rareza) */}
         <div style={{ width: "300px" }}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Dificultad</Typography>
+              <Typography>Equipment</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <FormControl fullWidth>
                 <Select
-                  value={filtroRarity}
-                  onChange={(e) => setFiltroRarity(e.target.value)}
+                  value={equipmentFilter}
+                  onChange={(e) => setEquipmentFilter(e.target.value)}
                   displayEmpty
                 >
-                  <MenuItem value="">Todas</MenuItem>
-                  <MenuItem value="beginner">Principiante</MenuItem>
-                  <MenuItem value="intermediate">Intermedio</MenuItem>
-                  <MenuItem value="expert">Avanzado</MenuItem>
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="bodyweight">Bodyweight</MenuItem>
+                  <MenuItem value="dumbbell">Dumbbell</MenuItem>
+                  <MenuItem value="barbell">Barbell</MenuItem>
                 </Select>
               </FormControl>
             </AccordionDetails>
@@ -145,7 +135,7 @@ export default function HomePage() {
       {loading && <CircularProgress />}
       {error && <Typography color="error">{error}</Typography>}
 
-      <ContenidoBrawlers data={brawlersFiltrados} />
+      <ExerciseGrid data={filteredExercises} />
     </div>
   );
 }

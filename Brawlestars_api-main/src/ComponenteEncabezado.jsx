@@ -57,7 +57,7 @@ function ComponenteEncabezado() {
               textDecoration: 'none',
             }}
           >
-            MATIAS
+            Botas
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -111,17 +111,17 @@ function ComponenteEncabezado() {
               textDecoration: 'none',
             }}
           >
-            MATIAS
+            Boats
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button component={Link} to="/" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               Home
             </Button>
             <Button component={Link} to="/personajes" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-              Personajes
+              Exercises
             </Button>
             <Button component={Link} to="/about" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-              About
+              Information
             </Button>
             <Button component={Link} to="/contact" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               Contact

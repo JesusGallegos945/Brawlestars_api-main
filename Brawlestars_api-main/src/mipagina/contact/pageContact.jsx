@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Typography, TextField, Button, Box, Grid, Divider, colors } from '@mui/material';
-import '../contact/style.css';  // Importamos el archivo de estilos CSS
+import { Container, Typography, TextField, Button, Box, Grid, Divider } from '@mui/material';
+import '../contact/style.css';
 
 export default function PageContact() {
   const [contact, setContact] = useState({
@@ -14,7 +14,6 @@ export default function PageContact() {
 
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Función para manejar los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContact({
@@ -23,11 +22,10 @@ export default function PageContact() {
     });
   };
 
-  // Función para guardar los datos del contacto (en este caso, solo se imprime en la consola)
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Formulario enviado:', contact);
-    setSuccessMessage('Tu mensaje ha sido enviado con éxito!');
+    console.log('Form submitted:', contact);
+    setSuccessMessage('Your message has been sent successfully!');
     setContact({
       name: '',
       surname: '',
@@ -41,20 +39,18 @@ export default function PageContact() {
   return (
     <Box className="contact-background">
       <Container maxWidth="md" className="contact-container">
-        <Typography variant="h3" className="contact-title" sx={{ color: "#ea2a04" }}>Contacto</Typography>
+        <Typography variant="h3" className="contact-title" sx={{ color: "black" }}>Contact</Typography>
         <Typography variant="body1" className="contact-description">
-        ¡Estoy aquí para ayudarte!
+          I'm here to help you!
         </Typography>
 
         <Divider sx={{ my: 4 }} />
 
-        {/* Formulario de contacto */}
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* Fila 1: Nombre */}
             <Grid item xs={12}>
               <TextField
-                label="Tu nombre"
+                label="Your name"
                 name="name"
                 fullWidth
                 variant="outlined"
@@ -65,10 +61,9 @@ export default function PageContact() {
               />
             </Grid>
 
-            {/* Fila 2: Apellidos */}
             <Grid item xs={12}>
               <TextField
-                label="Tus apellidos"
+                label="Your surname"
                 name="surname"
                 fullWidth
                 variant="outlined"
@@ -79,10 +74,9 @@ export default function PageContact() {
               />
             </Grid>
 
-            {/* Fila 3: Correo Electrónico */}
             <Grid item xs={12}>
               <TextField
-                label="Tu correo electrónico"
+                label="Your email"
                 name="email"
                 fullWidth
                 variant="outlined"
@@ -94,10 +88,9 @@ export default function PageContact() {
               />
             </Grid>
 
-            {/* Fila 4: Teléfono */}
             <Grid item xs={12}>
               <TextField
-                label="Tu teléfono"
+                label="Your phone"
                 name="phone"
                 fullWidth
                 variant="outlined"
@@ -106,14 +99,13 @@ export default function PageContact() {
                 onChange={handleChange}
                 className="contact-field"
                 pattern="[0-9]{10}"
-                placeholder="Escribe tu teléfono aquí"
+                placeholder="Enter your phone number"
               />
             </Grid>
 
-            {/* Fila 5: Asunto */}
             <Grid item xs={12}>
               <TextField
-                label="Asunto"
+                label="Subject"
                 name="subject"
                 fullWidth
                 variant="outlined"
@@ -124,10 +116,9 @@ export default function PageContact() {
               />
             </Grid>
 
-            {/* Fila 6: Mensaje */}
             <Grid item xs={12}>
               <TextField
-                label="Mensaje"
+                label="Message"
                 name="message"
                 fullWidth
                 variant="outlined"
@@ -136,14 +127,13 @@ export default function PageContact() {
                 value={contact.message}
                 onChange={handleChange}
                 className="contact-field"
-                placeholder="Escribe tu mensaje aquí"
+                placeholder="Write your message here"
               />
             </Grid>
 
-            {/* Fila 7: Botón de Enviar */}
             <Grid item xs={12}>
-              <Button variant="contained" sx={{ backgroundColor:'black' }} type="submit" fullWidth>
-                Enviar mensaje
+              <Button variant="contained" sx={{ backgroundColor: 'black' }} type="submit" fullWidth>
+                Send message
               </Button>
             </Grid>
           </Grid>
@@ -154,6 +144,5 @@ export default function PageContact() {
         )}
       </Container>
     </Box>
-    
   );
 }
