@@ -1,0 +1,99 @@
+/* Aseguramos que el div que contiene la imagen ocupe toda la pantalla */
+.page-home {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-image: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXp0b2w0ZGc3cGd6bm80bXltd3FzZXhiaWNmdXAzbGIzZnc4eXpsdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kxJiYw9EKD0wWAevmT/giphy.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative; /* Permite posicionar elementos internos absolutamente */
+  overflow: hidden; /* Evita scroll innecesario */
+}
+
+/* Capa semitransparente encima del fondo */
+.page-home::before {
+  content: ''; /* Necesario para que el pseudo-elemento sea visible */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Negro con 50% de opacidad */
+  z-index: 1; /* Se coloca sobre el fondo */
+}
+
+/* Asegurar que el contenido quede visible y no afectado por la transparencia */
+.page-home > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+
+
+/* Capa de superposición para mejorar la legibilidad del texto */
+.page-home::after {
+  content: '';
+  position:initial;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Fondo oscuro semitransparente */
+  z-index: -1; /* Aseguramos que la capa esté detrás del contenido */
+}
+
+/* Estilo para el contenedor de texto */
+.page-home-content {
+  text-align:left;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  max-width:90%; /* Limitar el tamaño del contenedor */
+}
+
+/* Estilos del título */
+.page-home-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color:#ffffff; 
+  letter-spacing: 2px; /* Espaciado entre letras para un toque futurista */
+  text-transform: uppercase; /* Mayúsculas para darle más protagonismo */
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6); /* Sombra en el texto para resaltar */
+}
+
+/* Estilo del párrafo */
+.page-home-content p {
+  font-size: 2rem;
+  color: #2b1818; 
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Estilos del botón */
+.page-home-content button {
+  background-color:black; 
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo del b */
+.page-home-content b {
+  font-size: 1.3rem;
+  color: #ffffff; 
+  margin-bottom: 2rem;
+  line-height: 1.6;
+ position:relative;
+}

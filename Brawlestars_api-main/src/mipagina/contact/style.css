@@ -1,0 +1,74 @@
+/* Estilo general para la página de contacto */
+.contact-background {
+  background-color: #f4f4f9; /* Fondo claro para el contraste */
+  padding: 50px 0;
+}
+
+.contact-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); /* Sombra ligera para darle profundidad */
+}
+
+.contact-title {
+  font-size: 2.5rem; /* Título grande */
+  color: #000000; /* Color brillante para el título */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.contact-description {
+  font-size: 1.1rem; /* Tamaño de texto adecuado */
+  color: #555; /* Texto gris oscuro */
+  margin-bottom: 30px; /* Separación entre el título y los campos del formulario */
+}
+
+.contact-field {
+  margin-bottom: 20px; /* Espaciado entre los campos */
+}
+
+/* Estilos para el botón de enviar */
+button {
+  background-color: #000000; /* Color de fondo verde brillante */
+  color: white; /* Texto blanco */
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+button:hover {
+  background-color: #878787; /* Color más oscuro al pasar el ratón */
+}
+
+/* Mensaje de éxito cuando se envía el formulario */
+.success-message {
+  color: #28a745; /* Color verde para el mensaje de éxito */
+  margin-top: 20px; /* Separación del mensaje */
+  font-weight: bold;
+}
+
+/* Estilo de los campos de texto */
+.MuiInputBase-root {
+  border-radius: 8px; /* Bordes redondeados para los campos de entrada */
+}
+
+/* Media query para dispositivos con un ancho máximo de 991px */
+@media (max-width: 991px) {
+  .contact-container {
+    padding: 20px; /* Menos relleno en pantallas más pequeñas */
+  }
+
+  .contact-title {
+    font-size: 2rem; /* Reducir el tamaño del título en pantallas pequeñas */
+  }
+
+  .contact-description {
+    font-size: 1rem; /* Reducir el tamaño del texto */
+  }
+
+  /* Aseguramos que las columnas se adapten bien en pantallas más pequeñas */
+  .contact-field {
+    margin-bottom: 10px; /* Menos espaciado entre los campos */
+  }
+}
