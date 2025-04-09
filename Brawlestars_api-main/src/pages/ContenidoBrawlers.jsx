@@ -10,29 +10,29 @@ export default function ContenidoBrawlers({ data }) {
     <div>
       {data.length === 0 ? (
         <Typography variant="body1" style={{ textAlign: "center", marginTop: "20px" }}>
-          No exercises found
+          No se encontraron ejercicios.
         </Typography>
       ) : (
         <Grid container spacing={3} style={{ padding: "20px" }}>
-          {data.map((exercise) => (
-            <Grid item xs={12} sm={6} md={4} key={exercise.id}>
+          {data.map((brawler) => (
+            <Grid item xs={12} sm={6} md={4} key={brawler.id}>
               <Paper style={{ padding: "10px", textAlign: "center" }}>
                 <CardMedia
                   component="img"
                   height="200"
-                  image={exercise.imageUrl}
-                  alt={exercise.name}
+                  image={brawler.imageUrl} // GIF real del ejercicio
+                  alt={brawler.name}
                   style={{ borderRadius: "10px" }}
                 />
                 <CardContent>
                   <Typography variant="h6" style={{ fontWeight: "bold" }}>
-                    {exercise.name}
+                    {brawler.name}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Target: {exercise.class?.name}
+                  Part of the body: {brawler.class?.name}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Equipment: {exercise.rarity?.name}
+                    Equipo: {brawler.rarity?.name}
                   </Typography>
                 </CardContent>
                 <Button
@@ -40,9 +40,9 @@ export default function ContenidoBrawlers({ data }) {
                   color="primary"
                   sx={{ backgroundColor: 'black' }}
                   style={{ marginTop: "10px" }}
-                  onClick={() => navigate(`/exercises/${exercise.id}`)}
+                  onClick={() => navigate(`/personajes/${brawler.id}`)} // Ruta original
                 >
-                  More Info
+                  More information
                 </Button>
               </Paper>
             </Grid>

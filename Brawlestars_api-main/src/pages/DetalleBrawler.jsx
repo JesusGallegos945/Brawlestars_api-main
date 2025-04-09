@@ -9,26 +9,27 @@ import {
   Grid,
   IconButton,
   Collapse,
+  Link,
   Box
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 
-export default function ExerciseDetail() {
+export default function DetalleBrawler() {
   const { id } = useParams();
-  const [exercise, setExercise] = useState(null);
+  const [brawler, setBrawler] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSections, setShowSections] = useState({
-    target: true,
+    bodyPart: true,
     equipment: true,
     instructions: true
   });
   const API_KEY = "4ededf6e20msh42a206ad00ea931p1da74djsnafb999b34c28";
 
   const getYouTubeLink = (exerciseName) => {
-    const searchQuery = encodeURIComponent(`${exerciseName} exercise tutorial`);
+    const searchQuery = encodeURIComponent(`${exerciseName} ejercicio tutorial`);
     return `https://www.youtube.com/results?search_query=${searchQuery}`;
   };
 
@@ -40,7 +41,7 @@ export default function ExerciseDetail() {
   };
 
   useEffect(() => {
-    const fetchExercise = async () => {
+    const obtenerDetalleBrawler = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -53,28 +54,28 @@ export default function ExerciseDetail() {
             },
           }
         );
-        if (!response.ok) throw new Error("Exercise not found");
-        const data = await response.json();
-        setExercise({
-          ...data,
-          class: { name: data.bodyPart },
-          rarity: { name: data.equipment || "bodyweight" },
-          imageUrl2: data.gifUrl,
-          youtubeLink: getYouTubeLink(data.name)
+        if (!response.ok) throw new Error("Ejercicio no encontrado");
+        const ejercicio = await response.json();
+        setBrawler({
+          ...ejercicio,
+          class: { name: ejercicio.bodyPart },
+          rarity: { name: ejercicio.equipment || "bodyweight" },
+          imageUrl2: ejercicio.gifUrl,
+          youtubeLink: getYouTubeLink(ejercicio.name)
         });
       } catch (error) {
-        setError("Error loading exercise. Please try again.");
+        setError("Error al cargar el ejercicio. Intenta más tarde.");
         console.error("Error:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchExercise();
+    obtenerDetalleBrawler();
   }, [id]);
 
-  if (loading) return <Typography sx={{ textAlign: "center", marginTop: 4 }}>Loading...</Typography>;
+  if (loading) return <Typography sx={{ textAlign: "center", marginTop: 4 }}>Cargando...</Typography>;
   if (error) return <Typography sx={{ textAlign: "center", marginTop: 4, color: "error.main" }}>{error}</Typography>;
-  if (!exercise) return <Typography sx={{ textAlign: "center", marginTop: 4 }}>Exercise not found.</Typography>;
+  if (!brawler) return <Typography sx={{ textAlign: "center", marginTop: 4 }}>No se encontró el ejercicio.</Typography>;
 
   return (
     <div>
@@ -83,8 +84,8 @@ export default function ExerciseDetail() {
           <Paper sx={{ padding: 2, borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <CardMedia
               component="img"
-              image={exercise.imageUrl2}
-              alt={exercise.name}
+              image={brawler.imageUrl2}
+              alt={brawler.name}
               sx={{ borderRadius: "30px", width: "100%", aspectRatio: "1/1", objectFit: "cover" }}
             />
             
@@ -92,12 +93,12 @@ export default function ExerciseDetail() {
               variant="contained"
               color="error"
               startIcon={<YouTubeIcon />}
-              href={exercise.youtubeLink}
+              href={brawler.youtubeLink}
               target="_blank"
               rel="noopener noreferrer"
               sx={{ mt: 2, width: "100%" }}
             >
-              Watch on YouTube
+              Look at YouTube
             </Button>
 
             <Button
@@ -114,53 +115,53 @@ export default function ExerciseDetail() {
         <Grid item xs={12} md={8}>
           <Paper sx={{ padding: 2, borderRadius: "10px" }}>
             <Typography variant="h2" sx={{ textAlign: "center", marginBottom: 2, fontWeight: "bold" }}>
-              {exercise.name}
+              {brawler.name}
             </Typography>
 
-            {/* Target Section */}
+            {/* Sección Parte del cuerpo */}
             <Box sx={{ mb: 2 }}>
               <Button
-                onClick={() => toggleSection('target')}
-                endIcon={showSections.target ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                onClick={() => toggleSection('bodyPart')}
+                endIcon={showSections.bodyPart ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 sx={{ width: '100%', justifyContent: 'space-between' }}
               >
-                Target Muscle
+                Part of the body
               </Button>
-              <Collapse in={showSections.target}>
+              <Collapse in={showSections.bodyPart}>
                 <Typography variant="body1" sx={{ fontSize: "20px", p: 1 }}>
-                  {exercise.class.name}
+                  {brawler.class.name}
                 </Typography>
               </Collapse>
             </Box>
 
-            {/* Equipment Section */}
+            {/* Sección Equipo */}
             <Box sx={{ mb: 2 }}>
               <Button
                 onClick={() => toggleSection('equipment')}
                 endIcon={showSections.equipment ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 sx={{ width: '100%', justifyContent: 'space-between' }}
               >
-                Equipment
+                Equipo
               </Button>
               <Collapse in={showSections.equipment}>
                 <Typography variant="body1" sx={{ fontSize: "20px", p: 1 }}>
-                  {exercise.rarity.name}
+                  {brawler.rarity.name}
                 </Typography>
               </Collapse>
             </Box>
 
-            {/* Instructions Section */}
+            {/* Sección Instrucciones */}
             <Box sx={{ mb: 2 }}>
               <Button
                 onClick={() => toggleSection('instructions')}
                 endIcon={showSections.instructions ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 sx={{ width: '100%', justifyContent: 'space-between' }}
               >
-                Instructions
+                Instrucions
               </Button>
               <Collapse in={showSections.instructions}>
                 <Typography variant="body1" sx={{ fontSize: "20px", p: 1 }}>
-                  {exercise.instructions || "No instructions available."}
+                  {brawler.instructions || "No disponibles."}
                 </Typography>
               </Collapse>
             </Box>
